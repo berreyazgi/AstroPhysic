@@ -1,0 +1,574 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Astronomy Midterm Practice</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column like an observing logbook; sticky mode bar, question cards, results summary on top after grading */
+:root{
+  --bg:#eef1f6; --paper:#ffffff; --ink:#18213a; --muted:#5a6580; --line:#d5dbe7;
+  --accent:#b8611a; --accent-soft:#f6e6d6; --good:#1f7a4d; --good-soft:#dcf0e5; --bad:#b3322f; --bad-soft:#f7dedd;
+  --sel:#2f4b8f; --sel-soft:#e1e8f7;
+  --f-display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1424; --paper:#161e33; --ink:#e4e8f2; --muted:#9aa5c0; --line:#2a3550;
+  --accent:#f0a35c; --accent-soft:#3a2a1c; --good:#5fd39a; --good-soft:#163527; --bad:#ff8a84; --bad-soft:#3d1c1d;
+  --sel:#9db5ff; --sel-soft:#22305a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1424; --paper:#161e33; --ink:#e4e8f2; --muted:#9aa5c0; --line:#2a3550;
+  --accent:#f0a35c; --accent-soft:#3a2a1c; --good:#5fd39a; --good-soft:#163527; --bad:#ff8a84; --bad-soft:#3d1c1d;
+  --sel:#9db5ff; --sel-soft:#22305a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:780px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+header h1{font-family:var(--f-display);font-weight:800;font-size:clamp(2.2rem,7vw,3.4rem);line-height:1;letter-spacing:.01em;margin:0;text-transform:uppercase;text-wrap:balance}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.lede{color:var(--muted);margin:12px 0 0;max-width:62ch}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chip{font-family:var(--f-mono);font-size:.74rem;border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--muted)}
+nav.modes{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;flex-wrap:wrap;padding-block:14px;margin-top:20px;border-bottom:1px solid var(--line)}
+nav.modes button{font:500 .92rem var(--f-body);background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}
+nav.modes button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button:focus-visible,.opt:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.panel{display:flex;flex-direction:column;gap:18px;margin-top:22px}
+.setup{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.setup h2,.results h2{font-family:var(--f-display);font-weight:600;font-size:1.6rem;margin:0;text-transform:uppercase;letter-spacing:.02em}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg button{font:500 .9rem var(--f-mono);background:var(--paper);color:var(--ink);border:1px solid var(--line);padding:6px 12px;border-radius:6px;cursor:pointer}
+.seg button[aria-pressed="true"]{border-color:var(--sel);background:var(--sel-soft);color:var(--sel)}
+.btn{font:600 .95rem var(--f-body);background:var(--accent);color:#fff;border:0;border-radius:8px;padding:10px 18px;cursor:pointer}
+:root[data-theme="dark"] .btn{color:#1a1206}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn{color:#1a1206}}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.topic-h{font-family:var(--f-display);font-weight:600;font-size:1.35rem;text-transform:uppercase;letter-spacing:.03em;margin:14px 0 -6px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.topic-h small{font-family:var(--f-mono);font-size:.75rem;color:var(--muted);text-transform:none;letter-spacing:0}
+.q{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.q.correct{border-color:var(--good)} .q.wrong{border-color:var(--bad)} .q.skipped{border-color:var(--accent)}
+.qhead{display:flex;gap:12px;align-items:baseline}
+.qnum{font-family:var(--f-mono);font-weight:500;color:var(--accent);flex:none;font-variant-numeric:tabular-nums}
+.qtext{font-weight:500;margin:0;min-width:0}
+.opts{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;border:0}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer;background:var(--paper)}
+.opt:hover{border-color:var(--sel)}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.letter{font-family:var(--f-mono);font-size:.85rem;flex:none;width:1.6em;height:1.6em;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted)}
+.opt.chosen{border-color:var(--sel);background:var(--sel-soft)} .opt.chosen .letter{background:var(--sel);color:var(--paper);border-color:var(--sel)}
+.graded .opt{cursor:default}
+.opt.is-right{border-color:var(--good);background:var(--good-soft)} .opt.is-right .letter{background:var(--good);border-color:var(--good);color:var(--paper)}
+.opt.is-wrong{border-color:var(--bad);background:var(--bad-soft)} .opt.is-wrong .letter{background:var(--bad);border-color:var(--bad);color:var(--paper)}
+.why{font-size:.92rem;color:var(--ink);background:var(--bg);border-radius:8px;padding:10px 12px}
+.why b{font-family:var(--f-mono);font-weight:500;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+.src{font-family:var(--f-mono);font-size:.75rem;color:var(--muted)}
+.results{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.score{font-family:var(--f-display);font-weight:800;font-size:3.2rem;line-height:1;font-variant-numeric:tabular-nums}
+.score span{font-size:1.4rem;color:var(--muted)}
+.bars{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;font-size:.88rem}
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--good)}
+.tn{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--muted);align-self:end}
+.submitbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.progress{font-family:var(--f-mono);font-size:.85rem;color:var(--muted)}
+.warn{background:var(--accent-soft);border-radius:8px;padding:10px 12px;font-size:.92rem}
+.keytable-wrap{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-weight:500;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+td.k{font-family:var(--f-mono);font-weight:500;color:var(--good);white-space:nowrap}
+td.n{font-family:var(--f-mono);color:var(--accent);font-variant-numeric:tabular-nums}
+.compact{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}
+.compact div{font-family:var(--f-mono);font-size:.85rem;border:1px solid var(--line);border-radius:6px;padding:4px 8px;background:var(--paper)}
+footer{margin-top:40px;font-size:.82rem;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.opt{transition:border-color .12s,background .12s}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Intro Astronomy · Midterm 1 · Chapters 2–7</p>
+    <h1>Astronomy Midterm Practice</h1>
+    <p class="lede">54 conceptual multiple-choice questions built from your instructor's question list and the course notes at intro-astro.skyerli.org. No equations, no memorised numbers: just the relationships the exam asks about.</p>
+    <div class="chips">
+      <span class="chip">Ch 2 Local sky</span><span class="chip">Ch 3 Radiation</span><span class="chip">Ch 4 Telescopes</span><span class="chip">Ch 5 Solar System</span><span class="chip">Ch 6 Inner planets</span><span class="chip">Ch 7 Outer planets</span>
+    </div>
+  </header>
+
+  <nav class="modes" role="tablist" aria-label="Practice mode">
+    <button id="tab-mock" role="tab" aria-selected="true" data-view="mock">Mock exam</button>
+    <button id="tab-bank" role="tab" aria-selected="false" data-view="bank">All 54 by topic</button>
+    <button id="tab-key" role="tab" aria-selected="false" data-view="key">Answer key</button>
+  </nav>
+
+  <section id="view-mock" class="panel">
+    <div class="setup" id="mock-setup">
+      <h2>Build a mock exam</h2>
+      <p style="margin:0;color:var(--muted)">Questions are drawn at random from all nine topics and the answer choices are shuffled. Answers stay hidden until you submit.</p>
+      <div class="row seg" id="mock-size" role="group" aria-label="Number of questions">
+        <span class="src" style="margin-right:4px">Questions</span>
+        <button id="size-20" data-n="20" aria-pressed="false">20</button>
+        <button id="size-30" data-n="30" aria-pressed="true">30</button>
+        <button id="size-54" data-n="54" aria-pressed="false">All 54</button>
+      </div>
+      <div class="row"><button class="btn" id="mock-start">Start new mock exam</button></div>
+    </div>
+    <div id="mock-exam" class="panel" style="margin-top:0"></div>
+  </section>
+
+  <section id="view-bank" class="panel" hidden>
+    <div id="bank-exam" class="panel" style="margin-top:0"></div>
+  </section>
+
+  <section id="view-key" class="panel" hidden>
+    <div class="setup" id="key-gate">
+      <h2>Answer key</h2>
+      <p style="margin:0;color:var(--muted)">Try the questions first. The key lists the correct letter for each question in the "All 54 by topic" order, with a short reason and the chapter it comes from.</p>
+      <div class="row"><button class="btn" id="key-reveal">Show the answer key</button></div>
+    </div>
+    <div id="key-body" class="panel" style="margin-top:0" hidden></div>
+  </section>
+
+  <footer>Built from the course notes, chapters 02–07. Questions marked "beyond the notes" go a little past what the chapter pages say; the answer given is the standard textbook explanation.</footer>
+</div>
+
+<script>
+const TOPICS=[
+ "Geometry of the Sky & Time","The Moon, Eclipses & Long-Term Motion","Nature of Light & Thermal Radiation",
+ "Telescopes & Instruments","Limits of Observation & Modern Solutions","Structure & Inventory of the Solar System",
+ "Inner Planets","Outer Planets","Comparative Planetology"];
+// t: topic index, q, o: options, a: correct index, x: explanation, c: chapter
+const Q=[
+{t:0,c:"Ch 2 §1",q:"The celestial sphere is imaginary. Why do astronomers still use it, and what does it get wrong?",
+ o:["It is a real shell to which the stars are attached, so it shows both their directions and distances correctly.",
+    "It correctly shows the directions of stars and their apparent daily motion, but it hides distances: stars in one constellation can lie at very different distances from Earth.",
+    "It correctly shows the true distances between stars, but it distorts their directions in the sky.",
+    "It is only useful for describing the Sun's motion; star positions on it are meaningless."],a:1,
+ x:"The notes call it a 'convenient fiction': good for locating stars and visualising their motion, but stars that look close together may be far apart in depth."},
+{t:0,c:"Ch 2 §2, §6",q:"Why do stars rise about 4 minutes earlier each night?",
+ o:["Earth's rotation speeds up slightly every night.",
+    "The stars themselves drift westward across the celestial sphere.",
+    "Earth also moves along its orbit each day, so it must turn a bit more than one full rotation for the Sun to return to the same spot; the stars return after exactly one rotation (a sidereal day, about 4 minutes shorter).",
+    "Precession of Earth's axis shifts every star by about 4 minutes per night."],a:2,
+ x:"A sidereal day (one rotation relative to the stars) is about 23h 56m; a solar day is 24h because of Earth's orbital motion. Clock time follows the Sun, so stars gain ~4 min per day."},
+{t:0,c:"Ch 2 §2, §6",q:"Suppose Earth stopped rotating but kept orbiting the Sun. What would happen?",
+ o:["Nothing would change, because day and night are caused by the Sun orbiting Earth.",
+    "One side would face the Sun forever, so there would be permanent day on one half.",
+    "Day and night would still last 24 hours, but stars would stop rising and setting.",
+    "The Sun would rise and set only once per orbit, so one 'day' would last a whole year; the stars would no longer sweep across the sky each night and would only shift slowly through the year."],a:3,
+ x:"Daily rising and setting comes from Earth's spin. Without spin, only the orbital motion changes the Sun's direction, so the day–night cycle would take a year."},
+{t:0,c:"Ch 2 §6",q:"What is the physical difference between a solar day and a sidereal day?",
+ o:["A sidereal day is one rotation measured against distant stars; a solar day is measured against the Sun and is longer because Earth moves along its orbit during that time.",
+    "A solar day is shorter because the Sun is closer to Earth than the stars.",
+    "They differ because the Moon's tides slow Earth down during the night.",
+    "They differ only because of precession of Earth's axis."],a:0,
+ x:"The Sun is not a fixed background point: after one rotation Earth has moved ~1° in its orbit, so it must turn a little more to bring the Sun back to the meridian."},
+{t:0,c:"Ch 2 §2–3",q:"Why does the Sun appear to move along the ecliptic instead of along the celestial equator?",
+ o:["Because the Sun really orbits Earth along a tilted path.",
+    "Because the ecliptic is the projection of Earth's orbital plane, and Earth's axis (and so the celestial equator) is tilted about 23.5° relative to that plane.",
+    "Because the Moon's 5° orbital tilt pulls the Sun's apparent path away from the equator.",
+    "Because precession moves the Sun off the equator each day."],a:1,
+ x:"The Sun's yearly path follows Earth's orbit. The celestial equator follows Earth's equator. The axis tilt makes these two circles cross at the equinoxes."},
+{t:0,c:"Ch 2 §3",q:"If Earth had zero axial tilt, how would daylight length change through the year?",
+ o:["Summer days would be even longer than now.",
+    "The poles would have six months of daylight and six months of night.",
+    "Daylight would be about the same every day of the year at any given place, roughly equal day and night, so there would be no seasons from tilt.",
+    "Daylight would change more strongly than today because Earth's distance from the Sun would dominate."],a:2,
+ x:"Seasons and changing day length come from the tilt. With no tilt the Sun would stay on the celestial equator, like a permanent equinox."},
+
+{t:1,c:"Ch 2 §5–6",q:"The Moon orbits Earth every 27.3 days. Why do its phases repeat every 29.5 days?",
+ o:["Because the Moon rotates more slowly than it orbits.",
+    "Because Earth moves along its orbit around the Sun, the Moon must go a little more than one full orbit to return to the same Sun–Earth–Moon alignment.",
+    "Because the Moon's orbit is tilted 5° to the ecliptic.",
+    "Because Earth's shadow takes two extra days to cross the Moon."],a:1,
+ x:"Sidereal month (27.3 d) is measured against the stars; synodic month (29.5 d) is measured against the Sun, which has moved in our sky meanwhile. Same idea as solar vs sidereal day."},
+{t:1,c:"Ch 2 §5",q:"Why don't we see a solar eclipse at every New Moon?",
+ o:["The Moon is too small to block the Sun except at perigee.",
+    "At New Moon the Moon is always on the far side of the Sun.",
+    "The Moon's orbit is tilted about 5° to the ecliptic, so at most New Moons the Moon passes above or below the Sun; an eclipse needs the New Moon to occur near a node.",
+    "Clouds hide most solar eclipses."],a:2,
+ x:"Eclipses happen only when the line of nodes points toward the Sun (eclipse seasons) and the phase is new (solar) or full (lunar)."},
+{t:1,c:"Ch 2 §5",q:"What alignment is needed for a lunar eclipse?",
+ o:["Sun – Earth – Moon in a straight line at Full Moon, with the Moon at or near a node of its orbit.",
+    "Sun – Moon – Earth in a line at New Moon.",
+    "The Moon at First Quarter, 90° from the Sun.",
+    "Any Full Moon, because Earth always blocks sunlight then."],a:0,
+ x:"Earth must lie between the Sun and Moon (Full Moon) and the Moon must be crossing the ecliptic plane so it enters Earth's shadow."},
+{t:1,c:"Ch 2 §4, §6",q:"Earth's axis slowly wobbles (precession). What changes would build up over thousands of years?",
+ o:["Earth's tilt would shrink toward zero and seasons would disappear.",
+    "The sidereal day would become twice as long.",
+    "The seasons would swap hemispheres every year.",
+    "The celestial pole would point at different stars, and the equinoxes and solstices would slowly shift against the background constellations."],a:3,
+ x:"One precession cycle takes ~26,000 years. The pole star changes and the equinox points drift, which is why the tropical year is ~20 minutes shorter than the sidereal year."},
+{t:1,c:"Ch 2 §4",q:"Why will Polaris not always be the North Star?",
+ o:["Polaris is moving away from us quickly and will fade.",
+    "Earth's axis precesses, tracing a circle in the sky over ~26,000 years, so it will point near other stars (for example Vega in about 13,000 years).",
+    "Earth's tilt will change from 23.5° to 0°.",
+    "Polaris orbits the celestial equator once per year."],a:1,
+ x:"Polaris is the pole star only because the axis points there now. Precession slowly changes where the axis points."},
+{t:1,c:"Ch 2 §4",q:"Does precession change Earth's tilt angle or only the direction the axis points, and why does that matter for seasons?",
+ o:["Only the direction. The tilt stays about 23.5°, so seasons still happen, but their timing shifts relative to the stars and the orbit.",
+    "Only the tilt. The tilt goes from 0° to 47°, so seasons become much stronger.",
+    "Both change equally, so seasons disappear every 13,000 years.",
+    "Neither changes; precession only affects the Moon."],a:0,
+ x:"The notes state the tilt remains close to 23.5° throughout the cycle. Seasons depend on the tilt angle, so they continue."},
+
+{t:2,c:"Ch 3 §2, §5",q:"Why can electromagnetic radiation cross empty space while sound cannot?",
+ o:["Light is made of tiny particles of matter that fly through space.",
+    "Space is filled with air thin enough for light but not for sound.",
+    "An EM wave is a self-sustaining disturbance of electric and magnetic fields and needs no material medium; sound is a vibration of matter and needs a medium.",
+    "Sound is too slow to cross the large distances in space."],a:2,
+ x:"A changing electric field creates a magnetic field and vice versa, so the wave carries itself. The notes stress that radiation waves are not like water or sound waves."},
+{t:2,c:"Ch 3 §5",q:"What must oscillate for an electromagnetic wave to propagate?",
+ o:["The molecules of the medium.",
+    "Electric and magnetic fields, perpendicular to each other, each change producing the other.",
+    "Only the magnetic field; the electric field stays constant.",
+    "The mass of the photon."],a:1,
+ x:"E and B are two aspects of one phenomenon, electromagnetism. Vibrating charges create the changing fields."},
+{t:2,c:"Ch 3 §1, §5",q:"Light carries energy but not matter. So what are we detecting when we observe a distant star?",
+ o:["Atoms of gas that left the star and reached Earth.",
+    "Sunlight reflected off the star.",
+    "Sound waves from the star converted to light by the atmosphere.",
+    "Energy carried by changing electric and magnetic fields, produced by vibrating charged particles in the star."],a:3,
+ x:"Radiation transmits energy with no physical contact. By measuring the field variations we learn about the distant vibrating particles."},
+{t:2,c:"Ch 3 §5",q:"How does the finite speed of light limit what we know about the universe 'now'?",
+ o:["It doesn't, because light is effectively instantaneous over astronomical distances.",
+    "We always see objects as they were when the light left them, never as they are at this moment; the farther the object, the older the view.",
+    "It only matters for objects inside the Solar System.",
+    "It makes distant objects look bluer than they really are."],a:1,
+ x:"The notes: 'We can never observe the universe as it is, only as it was.'"},
+{t:2,c:"Ch 3 §7",q:"Why is the blackbody curve idealized but still very useful in astronomy?",
+ o:["No real object absorbs and emits perfectly, but real spectra are close enough that the curve's peak works as a thermometer for distant objects.",
+    "Every star is a perfect blackbody, so the curve is exact.",
+    "It is only useful for measuring chemical composition.",
+    "It describes reflected light, not emitted light."],a:0,
+ x:"The blackbody curve is a good approximation of continuous spectra. Its peak shifts with temperature (Wien's law), so astronomers read temperature from it."},
+{t:2,c:"Ch 3 §7",q:"Two stars have the same peak wavelength but different total brightness. What must differ?",
+ o:["Their temperature.",
+    "Their chemical composition.",
+    "Their size (emitting surface area) or their distance from us; their temperatures are the same.",
+    "Their colour."],a:2,
+ x:"Same peak wavelength means same temperature (Wien's law). A star with the same temperature emits more in total if it has a larger surface, and appears brighter if it is closer."},
+
+{t:3,c:"Ch 4 §1–2",q:"Why is a telescope's main job collecting light rather than magnifying?",
+ o:["Magnification is impossible with mirrors.",
+    "Most astronomical objects are extremely faint; a bigger collecting area gathers more photons, making faint objects detectable and allowing analysis such as spectra.",
+    "Magnification makes stars disappear.",
+    "Collecting light keeps the telescope warm."],a:1,
+ x:"The notes define a telescope as a light collector: point, collect, focus. Observed brightness grows with mirror area."},
+{t:3,c:"Ch 4 §2",q:"Telescope B has twice the mirror diameter of telescope A. How much more light does B collect?",
+ o:["The same amount.","Twice as much.","Four times as much.","Eight times as much."],a:2,
+ x:"Collected light scales with mirror area (D × D), so doubling D gives 2 × 2 = 4 times the light."},
+{t:3,c:"Ch 4 §2",q:"Why did large modern telescopes switch from lenses to mirrors?",
+ o:["Mirrors give more magnification.",
+    "Lenses only work at night.",
+    "Mirrors are cheaper because they need no support.",
+    "Large lenses are heavy and hard to build, suffer chromatic aberration, absorb some light (especially IR/UV), and need two polished surfaces; a mirror needs only one."],a:3,
+ x:"All of these lens problems are listed in Ch 4. Mirrors avoid chromatic aberration and absorption, and can be supported from behind."},
+{t:3,c:"Ch 4 §1, Ch 3 §9–10",q:"Why do astronomers use spectrometers instead of only cameras when studying stars?",
+ o:["A spectrometer spreads light into its wavelengths, revealing composition, temperature, density, rotation and line-of-sight motion; a camera only records total light and position.",
+    "Spectrometers produce sharper images.",
+    "Cameras cannot detect starlight.",
+    "Spectrometers magnify stars more."],a:0,
+ x:"Spectral lines, line widths and Doppler shifts carry the physical information. A photometer/camera measures only how much light arrives."},
+{t:3,c:"Ch 4 §3",q:"Diffraction limits resolution. Why do longer wavelengths usually give worse angular resolution?",
+ o:["Long waves travel more slowly.",
+    "Diffraction spreading grows with wavelength (resolution ~ wavelength / diameter), so the image becomes fuzzier for the same telescope size.",
+    "Long wavelengths are absorbed by the mirror.",
+    "Long wavelengths are always fainter."],a:1,
+ x:"As wavelength increases, diffraction increases, the resolution angle gets bigger, and resolving objects gets worse."},
+{t:3,c:"Ch 4 §6",q:"Why can a radio telescope be much larger than an optical one without an extremely precise surface?",
+ o:["Radio waves are not affected by the shape of the dish.",
+    "Radio telescopes don't focus light at all.",
+    "Radio wavelengths are long, so surface imperfections much smaller than the wavelength don't matter.",
+    "Radio dishes are made of glass, which is easy to shape."],a:2,
+ x:"Surface accuracy only needs to be a small fraction of the wavelength. Radio waves are centimetres to metres long, so a wire mesh or panels are good enough."},
+
+{t:4,c:"Ch 4 §5",q:"A telescope could in theory resolve very fine detail. Why do ground-based images still look blurred?",
+ o:["Earth's turbulent atmosphere bends starlight slightly and keeps changing, spreading the star over a 'seeing disk' before the light reaches the telescope.",
+    "The mirror is always out of focus.",
+    "Stars are moving too fast.",
+    "Light pollution makes stars larger."],a:0,
+ x:"The notes: a 5 m telescope could reach 0.02″ in theory, but seeing limits it to about 1″."},
+{t:4,c:"Ch 4 §5",q:"Why are major observatories usually on high mountains or in remote deserts?",
+ o:["To be closer to the stars.",
+    "Because the ground is cheaper there.",
+    "To get above much of the atmosphere, where the air is more stable, dry and dust-free, and far from city light pollution.",
+    "Because magnetic fields are weaker there."],a:2,
+ x:"Each of these site requirements is listed under 'best possible seeing' in Ch 4."},
+{t:4,c:"Ch 4 §5",q:"What problem does adaptive optics solve, and why do even large telescopes need it?",
+ o:["It increases collecting area, which small telescopes lack.",
+    "It removes chromatic aberration from lenses.",
+    "It changes the observed wavelength to radio.",
+    "It tracks atmospheric turbulence (often with a laser) and adjusts mirrors in real time to undo the blurring; a bigger mirror alone cannot fix the atmosphere."],a:3,
+ x:"Seeing blurs every ground telescope regardless of size. Adaptive optics improved Gemini's resolution by nearly a factor of 10 in the notes' example."},
+{t:4,c:"Ch 4 §7",q:"Why can several small telescopes combined by interferometry match the resolution of a much larger one?",
+ o:["Because their light adds up to the area of one large mirror.",
+    "Combining their signals gives the resolution of a single dish as wide as the largest separation between them.",
+    "Because small telescopes have no diffraction.",
+    "Because interferometry magnifies the image."],a:1,
+ x:"Resolution depends on the baseline. Collecting area (brightness) is still only the sum of the small dishes."},
+{t:4,c:"Ch 4 §6",q:"Radio telescopes often have poorer resolution than optical ones. Why is radio astronomy still so valuable?",
+ o:["Radio images are always sharper after processing.",
+    "Radio telescopes can observe 24 hours a day, through clouds and bad weather, and they reveal objects and processes invisible at optical wavelengths.",
+    "Radio waves carry matter from the source.",
+    "Radio telescopes don't need to be pointed."],a:1,
+ x:"The notes list these advantages; Jansky's discovery of radio emission from the Galactic Center is the classic example."},
+{t:4,c:"Ch 3 §6, Ch 4 §8",q:"Why do astronomers observe at many wavelengths, not only visible light?",
+ o:["Visible light is blocked by the atmosphere.",
+    "Different objects and processes emit mostly in different parts of the spectrum (cool dust in IR, hot gas in UV/X-ray, etc.), so each band reveals information the others miss.",
+    "It is cheaper than building visible-light telescopes.",
+    "All wavelengths give the same picture, so it is just for confirmation."],a:1,
+ x:"The EM spectrum includes radio, IR, UV, X-ray and gamma rays. Each reveals different temperatures and processes, and some only reach us from space."},
+
+{t:5,c:"Ch 5 §1",q:"Early astronomers thought the Solar System had only a handful of objects. Why does modern astronomy list millions?",
+ o:["Many new objects formed in the last few centuries.",
+    "Telescopes, non-optical astronomy and spacecraft revealed faint, small or distant objects (moons, asteroids, comets, Kuiper Belt objects) invisible to the naked eye.",
+    "Astronomers began counting stars as part of the Solar System.",
+    "The Solar System expanded."],a:1,
+ x:"Ch 5 traces the inventory from Galileo's telescope through spacecraft exploration."},
+{t:5,c:"Ch 5 §3, §11",q:"Why do most planets orbit the Sun in nearly the same plane and the same direction?",
+ o:["The Sun's magnetic field forces them into one plane.",
+    "They were captured one by one from passing stars.",
+    "They formed from a rotating cloud that flattened into a spinning disk as it contracted (the solar nebula), so they inherited its plane and direction.",
+    "Jupiter's gravity pulled them into line."],a:2,
+ x:"As the nebula shrank it spun faster and became a disk; planets formed in the disk and orbit counter-clockwise like the Sun's spin."},
+{t:5,c:"Ch 5 §4, §11",q:"Why are the inner planets rocky while the outer planets are gas giants?",
+ o:["Close to the hot young Sun only rock and metal could condense; farther out it was cold enough for ices to form too, so outer planets grew large and captured hydrogen and helium gas.",
+    "The Sun's gravity pulled all the gas inward.",
+    "The inner planets lost their rock to the asteroid belt.",
+    "Outer planets formed later, after the gas arrived."],a:0,
+ x:"Condensation theory: temperature in the disk decided which materials could solidify. That is why the Solar System is 'highly differentiated' into inner and outer groups."},
+{t:5,c:"Ch 5 §6–7",q:"Why are asteroids concentrated mainly between Mars and Jupiter?",
+ o:["It is the coldest region of the Solar System.",
+    "The Sun's gravity is weakest there.",
+    "They are fragments of a planet that exploded recently.",
+    "Jupiter's strong gravity (resonances) kept that material from collecting into a planet, leaving rocky bodies orbiting in the gap."],a:3,
+ x:"The Kirkwood gaps in Ch 5 show how repeated tugs from Jupiter shape the belt."},
+{t:5,c:"Ch 5 §8",q:"Why do comet tails always point away from the Sun, whatever direction the comet is moving?",
+ o:["The comet's motion leaves the tail trailing behind it.",
+    "The tail is pushed outward by the Sun's radiation and the solar wind, so it points away from the Sun on both the inbound and outbound parts of the orbit.",
+    "The tail is attracted to the outer planets.",
+    "The tail is a shadow cast by the nucleus."],a:1,
+ x:"The ion tail points straight away from the Sun; the dust tail curves and lags behind but also points generally away."},
+{t:5,c:"Ch 5 §2–3",q:"The Sun holds about 99.9% of the Solar System's mass. Why don't the planets fall into it?",
+ o:["The planets are too light to be pulled.",
+    "The Sun's gravity weakens to zero beyond Mercury.",
+    "Each planet moves sideways fast enough that gravity bends its path into a closed orbit instead of pulling it straight in.",
+    "The solar wind pushes the planets outward and balances gravity."],a:2,
+ x:"An orbit is continuous falling around the Sun. The planets' orbital motion (from the spinning nebula) keeps them in nearly circular paths."},
+
+{t:6,c:"Ch 5 §4, §6; Ch 6 §5",q:"Mercury and Venus have no moons, Earth has one, and Mars has two small ones. Which explanation fits the course notes best?",
+ o:["Moons only form around planets with magnetic fields.",
+    "Terrestrial planets have few moons in general; Mars's two tiny moons are probably captured asteroids, while Mercury and Venus sit very close to the massive Sun, whose gravity makes it hard to keep a moon.",
+    "Mercury and Venus are too hot for moons to exist.",
+    "Every terrestrial planet started with two moons and lost them."],a:1,
+ x:"The notes say terrestrial planets have 'few moons, if any' and that Phobos and Deimos are probably captured asteroids. The Sun's influence on Mercury and Venus is the standard textbook reason."},
+{t:6,c:"Ch 6 §3",q:"Why is Venus hotter than Mercury, even though Mercury is closer to the Sun?",
+ o:["Venus has many active volcanoes heating the surface.",
+    "Venus rotates faster, creating friction.",
+    "Venus's thick carbon-dioxide atmosphere traps outgoing infrared radiation (runaway greenhouse effect), while Mercury has almost no atmosphere.",
+    "Venus is made of denser material."],a:2,
+ x:"Venus's surface is about 730 K. Mercury's atmosphere is a near vacuum, so it cannot hold heat."},
+{t:6,c:"Ch 6 §5",q:"Which surface evidence suggests Mars once had a wetter climate?",
+ o:["Its red colour, which comes from water.",
+    "Its two polar caps of pure carbon dioxide.",
+    "The height of Olympus Mons.",
+    "Runoff and outflow channels, teardrop 'islands', possible river deltas and ancient shorelines, eroded small craters, 'splosh' craters and gullies."],a:3,
+ x:"These features in Ch 6 point to flowing and standing water in the past; the thin atmosphere today cannot keep liquid water."},
+{t:6,c:"Ch 6 §2–3",q:"Why do Mercury and the Moon have extreme temperature differences between day and night?",
+ o:["They have almost no atmosphere to trap or spread heat, and their days are long, so the sunlit side bakes and the night side radiates its heat into space.",
+    "They are closer to the Sun than any other bodies.",
+    "Their interiors are still molten.",
+    "Their magnetic fields reflect sunlight."],a:0,
+ x:"An atmosphere acts as a blanket and moves heat around. Without one, surface temperatures swing wildly."},
+{t:6,c:"Ch 6 §3 (beyond the notes)",q:"Why does Venus rotate retrograde (backwards) compared with most planets?",
+ o:["Because it is closer to the Sun than Earth.",
+    "Because the solar nebula rotated backwards at Venus's distance.",
+    "It is not the original direction from the nebula; most likely a major event early in its history (such as a large impact) or long-term tidal effects on its thick atmosphere changed its spin.",
+    "Because its magnetic field reversed."],a:2,
+ x:"The notes only state that Venus has slow, retrograde rotation. Since planets formed spinning the same way as the disk, something must have changed Venus's spin later."},
+{t:6,c:"Ch 6 §2, §4–5",q:"What makes Earth more geologically active than Mercury or Mars?",
+ o:["Earth is closer to the Sun than Mars.",
+    "Earth is larger, so it kept more internal heat (from formation, differentiation and radioactive decay) and cools more slowly; that heat drives plate tectonics, volcanism and earthquakes. Smaller Mercury and Mars cooled faster.",
+    "Earth's Moon creates all its volcanoes through tides.",
+    "Earth has a thicker crust than other planets."],a:1,
+ x:"Ch 6 describes Earth cooling 'from the outside in like a hot potato'. Mercury's crust shrank as it cooled; Mars shows no plate tectonics and extinct volcanoes."},
+
+{t:7,c:"Ch 5 §6, §11; Ch 7 §1",q:"Why are the outer planets made mostly of gas and ice?",
+ o:["They formed in the cold outer disk where ices could condense, so they built large cores quickly and their strong gravity captured lots of hydrogen and helium.",
+    "The Sun blew all the rock out of the outer Solar System.",
+    "They were once rocky but melted into gas.",
+    "They formed after the Sun ran out of rock."],a:0,
+ x:"Jovian planets are made mostly of hydrogen, helium and hydrogen compounds (water, ammonia, methane)."},
+{t:7,c:"Ch 7 §1–3",q:"Saturn's rings are spectacular, while the rings of Jupiter, Uranus and Neptune are faint. Which statement matches the notes?",
+ o:["Only Saturn lies inside the asteroid belt, which supplies ring material.",
+    "All four giants have ring systems inside their Roche limits, where tidal forces stop moons from forming; Saturn's rings are bright water ice, while the others' are dark rock and dust, so they are much less visible.",
+    "Uranus and Neptune once had bright rings but Jupiter stole the material.",
+    "Rings only form around planets with liquid surfaces."],a:1,
+ x:"Ring particles lie within (or near) the Roche limit. Jupiter's ring is also faint, made of dark fragments chipped off inner moons."},
+{t:7,c:"Ch 7 §2–3",q:"What drives the extreme winds and storms on Jupiter and Saturn?",
+ o:["Heating by the Sun alone.",
+    "Collisions with their moons.",
+    "Their solid surfaces creating friction.",
+    "Convection powered by internal heat (both radiate more energy than they receive), with fast rotation stretching the winds into east–west bands."],a:3,
+ x:"Jupiter still cools from gravitational compression; Saturn heats internally as helium rains down. Rotation of about 10 hours shapes the zonal flow."},
+{t:7,c:"Ch 7 §4 (beyond the notes)",q:"Why does Uranus have such an unusual axial tilt (about 98°)?",
+ o:["Its fast rotation flipped it over.",
+    "Its strong magnetic field pulls the axis sideways.",
+    "Most likely a giant collision or strong gravitational disturbance during the early Solar System knocked its axis over.",
+    "The Sun's gravity slowly tilts all distant planets."],a:2,
+ x:"The notes give the 98° tilt and its extreme seasons (42-year polar nights) but not the cause; a large early impact is the standard explanation. Neptune's tilt (~28°) is actually similar to Earth's."},
+{t:7,c:"Ch 7 §1, §5",q:"Why are many outer-planet moons irregular or captured instead of formed in place?",
+ o:["Because the giant planets are so massive that their gravity can capture passing small bodies; captured moons often have odd orbits, like Triton's retrograde motion.",
+    "Because the giant planets are too cold for moons to form.",
+    "Because their rings destroy any moon that forms nearby.",
+    "Because all of their moons come from the asteroid belt."],a:0,
+ x:"The notes: 'Since Jovians are massive they will surely attract many minor objects.' Triton orbits backwards, a classic sign of capture."},
+{t:7,c:"Ch 7 §1, §4–5 (partly beyond the notes)",q:"How do the atmospheres of Uranus and Neptune differ from those of Jupiter and Saturn?",
+ o:["Uranus and Neptune have pure oxygen atmospheres.",
+    "There is no difference; all four are identical.",
+    "Uranus and Neptune have no atmospheres.",
+    "Uranus and Neptune contain more methane and other ices relative to hydrogen and helium (giving them a blue colour), and Uranus in particular gives off little internal heat, so its atmosphere looks nearly featureless."],a:3,
+ x:"Jupiter and Saturn are dominated by hydrogen and helium and both release strong internal heat. The notes describe Uranus as almost featureless and Neptune's clouds as methane ice."},
+
+{t:8,c:"Ch 5 §4, §6; Ch 7 §1",q:"Which pattern correctly compares inner and outer planets?",
+ o:["Inner: large, low density, fast rotation, many moons. Outer: small, rocky, slow rotation, no rings.",
+    "Inner: small, dense, rocky, close together, slow rotation, few or no moons, no rings. Outer: large, low density, gaseous, widely spaced, fast rotation, many moons and rings.",
+    "Both groups have the same density but different colours.",
+    "Inner planets orbit clockwise and outer planets counter-clockwise."],a:1,
+ x:"This is the terrestrial vs Jovian summary from Ch 5 and Ch 7."},
+{t:8,c:"Ch 6 §3–4; Ch 7 §1",q:"How are planetary magnetic fields related to a planet's properties?",
+ o:["A strong field needs an electrically conducting interior that is moving, plus fairly fast rotation (a dynamo); slow rotation or a cooled, solid interior gives a weak field or none.",
+    "Only planets close to the Sun have magnetic fields.",
+    "Magnetic field strength depends only on a planet's colour.",
+    "All planets have the same magnetic field strength."],a:0,
+ x:"The notes link Jovian fields to fast rotation (dynamo effect) and say Venus has no field probably because it rotates so slowly."},
+{t:8,c:"Ch 6 §5; Ch 7 §1–2",q:"Why does Jupiter have a very strong magnetic field while Mars has almost none?",
+ o:["Jupiter is closer to the Sun.",
+    "Mars rotates much faster than Jupiter.",
+    "Jupiter is huge, spins in about 10 hours and has a deep layer of liquid metallic hydrogen, an excellent moving conductor; Mars is small, its interior has cooled, and its dynamo has stopped.",
+    "Jupiter's moons generate its magnetic field."],a:2,
+ x:"Jupiter's intrinsic field is about 20,000 times Earth's. Mars rotates about as fast as Earth, so the difference is its small, cooled interior."},
+{t:8,c:"Ch 5 §11",q:"How does studying our inner and outer planets help us understand planet formation around other stars?",
+ o:["It shows that planets cannot form around other stars.",
+    "It proves every star has exactly eight planets.",
+    "It shows that planets form only from captured asteroids.",
+    "Our system shows the pattern that disk-based (condensation) theory predicts: rocky planets near the star, giants farther out. We can test that same model on other systems."],a:3,
+ x:"The nebular/condensation theory explains our system's layout. Applying it elsewhere gives predictions to check against what we observe."},
+{t:8,c:"Ch 7 §1 (partly beyond the notes)",q:"Why are the ice giants (Uranus, Neptune) different from the gas giants (Jupiter, Saturn)?",
+ o:["Ice giants formed closer to the Sun.",
+    "Ice giants are made of pure hydrogen.",
+    "Ice giants formed farther out, where material was sparser and growth was slower, so they captured much less hydrogen and helium; they are smaller and richer in ices and rock, without the thick metallic-hydrogen layer.",
+    "Ice giants are failed stars."],a:2,
+ x:"The notes divide the giant interiors into two configurations: Jupiter/Saturn and Uranus/Neptune."},
+{t:8,c:"Ch 5–6 (applied)",q:"If Earth were moved to Jupiter's orbit, what would happen to its surface conditions?",
+ o:["Earth would quickly turn into a gas giant.",
+    "It would receive far less sunlight, so surface temperatures would fall far below freezing, the oceans would freeze and liquid water would disappear, making the surface uninhabitable.",
+    "Nothing important would change because Earth's atmosphere holds its heat.",
+    "Earth would get hotter because of Jupiter's internal heat."],a:1,
+ x:"Sunlight weakens with distance. Earth would still be a rocky planet; it cannot capture a thick hydrogen envelope now, so it would simply become a frozen world."}
+];
+const L="ABCD";
+
+function el(tag,attrs={},html){const e=document.createElement(tag);for(const k in attrs){if(k==="class")e.className=attrs[k];else e.setAttribute(k,attrs[k]);}if(html!==undefined)e.innerHTML=html;return e;}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// Build an exam into container. items: [{qi, order:[option indices]}]
+function buildExam(container,items,opts){
+  container.innerHTML="";
+  const answers=new Array(items.length).fill(null);
+  let graded=false, lastTopic=-1;
+  const cards=[];
+  const results=el("div",{class:"results"}); results.hidden=true; container.appendChild(results);
+  items.forEach((it,n)=>{
+    const d=Q[it.qi];
+    if(opts.grouped && d.t!==lastTopic){lastTopic=d.t;container.appendChild(el("h3",{class:"topic-h"},`Topic ${d.t+1} · ${TOPICS[d.t]}`));}
+    const card=el("article",{class:"q",id:`${opts.id}-q${n}`});
+    card.appendChild(el("div",{class:"qhead"},`<span class="qnum">${opts.grouped?it.qi+1:n+1}.</span><p class="qtext">${esc(d.q)}</p>`));
+    const fs=el("fieldset",{class:"opts"});
+    const labels=[];
+    it.order.forEach((oi,k)=>{
+      const lab=el("label",{class:"opt"});
+      const inp=el("input",{type:"radio",name:`${opts.id}-${n}`,id:`${opts.id}-${n}-${k}`,value:k});
+      inp.addEventListener("change",()=>{if(graded)return;answers[n]=k;labels.forEach(x=>x.classList.remove("chosen"));lab.classList.add("chosen");prog();});
+      lab.appendChild(inp);
+      lab.appendChild(el("span",{class:"letter"},L[k]));
+      lab.appendChild(el("span",{},esc(d.o[oi])));
+      fs.appendChild(lab);labels.push(lab);
+    });
+    card.appendChild(fs);
+    const why=el("div",{class:"why"});why.hidden=true;card.appendChild(why);
+    container.appendChild(card);cards.push({card,labels,why,it,d});
+  });
+  const bar=el("div",{class:"submitbar"});
+  const p=el("span",{class:"progress"});
+  const sub=el("button",{class:"btn",id:`${opts.id}-submit`},"Submit and grade");
+  bar.appendChild(p);bar.appendChild(sub);container.appendChild(bar);
+  const note=el("div",{class:"warn"});note.hidden=true;container.insertBefore(note,bar);
+  let armed=false;
+  function prog(){const k=answers.filter(a=>a!==null).length;p.textContent=`${k} of ${items.length} answered`;note.hidden=true;armed=false;sub.textContent="Submit and grade";}
+  prog();
+  sub.addEventListener("click",()=>{
+    if(graded){opts.onRetry&&opts.onRetry();return;}
+    const blank=answers.filter(a=>a===null).length;
+    if(blank&&!armed){armed=true;note.hidden=false;note.textContent=`${blank} question${blank>1?"s are":" is"} still unanswered and will count as wrong. Press "Submit anyway" to grade now.`;sub.textContent="Submit anyway";return;}
+    grade();
+  });
+  function grade(){
+    graded=true;container.classList.add("graded");note.hidden=true;
+    let score=0;const per=TOPICS.map(()=>[0,0]);
+    cards.forEach((c,n)=>{
+      const right=c.it.order.indexOf(c.d.a), mine=answers[n];
+      per[c.d.t][1]++;
+      c.labels.forEach((lab,k)=>{lab.querySelector("input").disabled=true;if(k===right)lab.classList.add("is-right");else if(k===mine)lab.classList.add("is-wrong");});
+      if(mine===right){score++;per[c.d.t][0]++;c.card.classList.add("correct");}
+      else c.card.classList.add(mine===null?"skipped":"wrong");
+      c.why.hidden=false;
+      c.why.innerHTML=`<b>${mine===right?"Correct":"Answer: "+L[right]} · ${esc(c.d.c)}</b>${esc(c.d.x)}`;
+    });
+    const pct=Math.round(score/items.length*100);
+    let rows="";per.forEach((v,i)=>{if(v[1])rows+=`<div>${esc(TOPICS[i])}<div class="bar"><i style="width:${v[0]/v[1]*100}%"></i></div></div><span class="tn">${v[0]}/${v[1]}</span>`;});
+    results.innerHTML=`<p class="eyebrow" style="margin:0">Result</p><div class="score">${score}<span> / ${items.length} · ${pct}%</span></div><p style="margin:0;color:var(--muted)">Green is the correct choice; red is yours where it was wrong. Each question now shows the reason and the chapter to reread.</p><div class="bars">${rows}</div>`;
+    results.hidden=false;sub.textContent=opts.retryLabel;
+    results.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+  }
+}
+
+// Mock exam
+let mockN=30;
+document.querySelectorAll("#mock-size button").forEach(b=>b.addEventListener("click",()=>{mockN=+b.dataset.n;document.querySelectorAll("#mock-size button").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));}));
+function startMock(){
+  // spread across topics: shuffle within topics, then round-robin
+  const byT=TOPICS.map((_,t)=>shuffle(Q.map((q,i)=>i).filter(i=>Q[i].t===t)));
+  const picked=[];let r=0;
+  while(picked.length<mockN){byT.forEach(arr=>{if(picked.length<mockN&&arr[r]!==undefined)picked.push(arr[r]);});r++;}
+  const items=shuffle(picked).map(qi=>({qi,order:shuffle([0,1,2,3])}));
+  buildExam(document.getElementById("mock-exam"),items,{id:"mock",grouped:false,retryLabel:"Start another mock exam",onRetry:()=>{startMock();document.getElementById("mock-setup").scrollIntoView({block:"start"});}});
+}
+document.getElementById("mock-start").addEventListener("click",startMock);
+startMock();
+
+// Bank
+function startBank(){buildExam(document.getElementById("bank-exam"),Q.map((_,qi)=>({qi,order:[0,1,2,3]})),{id:"bank",grouped:true,retryLabel:"Clear answers and retry",onRetry:()=>{startBank();window.scrollTo({top:0});}});}
+startBank();
+
+// Key
+document.getElementById("key-reveal").addEventListener("click",()=>{
+  const body=document.getElementById("key-body");
+  let compact='<div class="compact">'+Q.map((d,i)=>`<div>${i+1} · ${L[d.a]}</div>`).join("")+"</div>";
+  let rows=Q.map((d,i)=>`<tr><td class="n">${i+1}</td><td class="k">${L[d.a]}</td><td>${esc(d.x)}</td><td class="src">${esc(d.c)}</td></tr>`).join("");
+  body.innerHTML=`<h3 class="topic-h">Quick key</h3>${compact}<h3 class="topic-h">With reasons</h3><div class="keytable-wrap"><table><thead><tr><th>#</th><th>Ans</th><th>Why</th><th>Source</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  body.hidden=false;document.getElementById("key-gate").hidden=true;
+});
+
+// Tabs
+const tabs=document.querySelectorAll("nav.modes button");
+function show(v){tabs.forEach(t=>t.setAttribute("aria-selected",t.dataset.view===v?"true":"false"));["mock","bank","key"].forEach(x=>document.getElementById("view-"+x).hidden=x!==v);}
+tabs.forEach(t=>t.addEventListener("click",()=>{show(t.dataset.view);history.replaceState(null,"","#"+t.dataset.view);}));
+function fromHash(){const h=location.hash.slice(1);if(["mock","bank","key"].includes(h))show(h);}
+window.addEventListener("hashchange",fromHash);fromHash();
+</script>
+
+</body></html>
