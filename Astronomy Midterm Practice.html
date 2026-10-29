@@ -58,6 +58,9 @@ button:focus-visible,.opt:focus-within{outline:2px solid var(--accent);outline-o
 .letter{font-family:var(--f-mono);font-size:.85rem;flex:none;width:1.6em;height:1.6em;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted)}
 .opt.chosen{border-color:var(--sel);background:var(--sel-soft)} .opt.chosen .letter{background:var(--sel);color:var(--paper);border-color:var(--sel)}
 .graded .opt{cursor:default}
+.graded .opt:hover{border-color:var(--line)} .graded .opt.is-right:hover{border-color:var(--good)} .graded .opt.is-wrong:hover{border-color:var(--bad)}
+.toggle{display:flex;gap:8px;align-items:center;font-size:.92rem;cursor:pointer}
+.toggle input{width:18px;height:18px;accent-color:var(--accent)}
 .opt.is-right{border-color:var(--good);background:var(--good-soft)} .opt.is-right .letter{background:var(--good);border-color:var(--good);color:var(--paper)}
 .opt.is-wrong{border-color:var(--bad);background:var(--bad-soft)} .opt.is-wrong .letter{background:var(--bad);border-color:var(--bad);color:var(--paper)}
 .why{font-size:.92rem;color:var(--ink);background:var(--bg);border-radius:8px;padding:10px 12px}
@@ -104,13 +107,14 @@ footer{margin-top:40px;font-size:.82rem;color:var(--muted)}
   <section id="view-mock" class="panel">
     <div class="setup" id="mock-setup">
       <h2>Build a mock exam</h2>
-      <p style="margin:0;color:var(--muted)">Questions are drawn at random from all nine topics and the answer choices are shuffled. Answers stay hidden until you submit.</p>
+      <p style="margin:0;color:var(--muted)">Questions are drawn at random from all nine topics and the answer choices are shuffled. Click an answer to see straight away whether it is right, with the reason.</p>
       <div class="row seg" id="mock-size" role="group" aria-label="Number of questions">
         <span class="src" style="margin-right:4px">Questions</span>
         <button id="size-20" data-n="20" aria-pressed="false">20</button>
         <button id="size-30" data-n="30" aria-pressed="true">30</button>
         <button id="size-54" data-n="54" aria-pressed="false">All 54</button>
       </div>
+      <label class="toggle" for="mock-instant"><input type="checkbox" id="mock-instant" checked> Show correct / wrong right after each answer (untick for real exam conditions)</label>
       <div class="row"><button class="btn" id="mock-start">Start new mock exam</button></div>
     </div>
     <div id="mock-exam" class="panel" style="margin-top:0"></div>
@@ -492,7 +496,7 @@ function buildExam(container,items,opts){
     it.order.forEach((oi,k)=>{
       const lab=el("label",{class:"opt"});
       const inp=el("input",{type:"radio",name:`${opts.id}-${n}`,id:`${opts.id}-${n}-${k}`,value:k});
-      inp.addEventListener("change",()=>{if(graded)return;answers[n]=k;labels.forEach(x=>x.classList.remove("chosen"));lab.classList.add("chosen");prog();});
+      inp.addEventListener("change",()=>{if(graded||cards[n].done)return;answers[n]=k;labels.forEach(x=>x.classList.remove("chosen"));lab.classList.add("chosen");if(opts.instant())reveal(n);prog();});
       lab.appendChild(inp);
       lab.appendChild(el("span",{class:"letter"},L[k]));
       lab.appendChild(el("span",{},esc(d.o[oi])));
@@ -508,7 +512,17 @@ function buildExam(container,items,opts){
   bar.appendChild(p);bar.appendChild(sub);container.appendChild(bar);
   const note=el("div",{class:"warn"});note.hidden=true;container.insertBefore(note,bar);
   let armed=false;
-  function prog(){const k=answers.filter(a=>a!==null).length;p.textContent=`${k} of ${items.length} answered`;note.hidden=true;armed=false;sub.textContent="Submit and grade";}
+  function reveal(n){
+    const c=cards[n];c.done=true;
+    const right=c.it.order.indexOf(c.d.a), mine=answers[n];
+    c.card.classList.add("graded");
+    c.labels.forEach((lab,k)=>{lab.querySelector("input").disabled=true;if(k===right)lab.classList.add("is-right");else if(k===mine)lab.classList.add("is-wrong");});
+    c.card.classList.add(mine===right?"correct":(mine===null?"skipped":"wrong"));
+    c.why.hidden=false;
+    c.why.innerHTML=`<b>${mine===right?"✓ Correct":(mine===null?"Not answered · Answer: ":"✗ Wrong · Answer: ")+(mine===right?"":L[right])} · ${esc(c.d.c)}</b>${esc(c.d.x)}`;
+    return mine===right;
+  }
+  function prog(){const k=answers.filter(a=>a!==null).length;const ok=cards.filter((c,n)=>c.done&&answers[n]===c.it.order.indexOf(c.d.a)).length;p.textContent=`${k} of ${items.length} answered`+(opts.instant()&&k?` · ${ok} correct so far`:"");note.hidden=true;armed=false;sub.textContent=graded?opts.retryLabel:"Finish and see score";}
   prog();
   sub.addEventListener("click",()=>{
     if(graded){opts.onRetry&&opts.onRetry();return;}
@@ -520,13 +534,9 @@ function buildExam(container,items,opts){
     graded=true;container.classList.add("graded");note.hidden=true;
     let score=0;const per=TOPICS.map(()=>[0,0]);
     cards.forEach((c,n)=>{
-      const right=c.it.order.indexOf(c.d.a), mine=answers[n];
       per[c.d.t][1]++;
-      c.labels.forEach((lab,k)=>{lab.querySelector("input").disabled=true;if(k===right)lab.classList.add("is-right");else if(k===mine)lab.classList.add("is-wrong");});
-      if(mine===right){score++;per[c.d.t][0]++;c.card.classList.add("correct");}
-      else c.card.classList.add(mine===null?"skipped":"wrong");
-      c.why.hidden=false;
-      c.why.innerHTML=`<b>${mine===right?"Correct":"Answer: "+L[right]} · ${esc(c.d.c)}</b>${esc(c.d.x)}`;
+      const ok=c.done?answers[n]===c.it.order.indexOf(c.d.a):reveal(n);
+      if(ok){score++;per[c.d.t][0]++;}
     });
     const pct=Math.round(score/items.length*100);
     let rows="";per.forEach((v,i)=>{if(v[1])rows+=`<div>${esc(TOPICS[i])}<div class="bar"><i style="width:${v[0]/v[1]*100}%"></i></div></div><span class="tn">${v[0]}/${v[1]}</span>`;});
@@ -545,13 +555,14 @@ function startMock(){
   const picked=[];let r=0;
   while(picked.length<mockN){byT.forEach(arr=>{if(picked.length<mockN&&arr[r]!==undefined)picked.push(arr[r]);});r++;}
   const items=shuffle(picked).map(qi=>({qi,order:shuffle([0,1,2,3])}));
-  buildExam(document.getElementById("mock-exam"),items,{id:"mock",grouped:false,retryLabel:"Start another mock exam",onRetry:()=>{startMock();document.getElementById("mock-setup").scrollIntoView({block:"start"});}});
+  buildExam(document.getElementById("mock-exam"),items,{id:"mock",grouped:false,instant:()=>document.getElementById("mock-instant").checked,retryLabel:"Start another mock exam",onRetry:()=>{startMock();document.getElementById("mock-setup").scrollIntoView({block:"start"});}});
 }
 document.getElementById("mock-start").addEventListener("click",startMock);
+document.getElementById("mock-instant").addEventListener("change",startMock);
 startMock();
 
 // Bank
-function startBank(){buildExam(document.getElementById("bank-exam"),Q.map((_,qi)=>({qi,order:[0,1,2,3]})),{id:"bank",grouped:true,retryLabel:"Clear answers and retry",onRetry:()=>{startBank();window.scrollTo({top:0});}});}
+function startBank(){buildExam(document.getElementById("bank-exam"),Q.map((_,qi)=>({qi,order:[0,1,2,3]})),{id:"bank",grouped:true,instant:()=>true,retryLabel:"Clear answers and retry",onRetry:()=>{startBank();window.scrollTo({top:0});}});}
 startBank();
 
 // Key
